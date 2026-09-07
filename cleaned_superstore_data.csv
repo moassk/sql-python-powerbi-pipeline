@@ -1,0 +1,21 @@
+import pandas as pd
+
+# 1. قراءة البيانات الخام
+# استبدل Moath باسم المستخدم الفعلي الخاص بجهازك
+df = pd.read_csv(r'C:\Users\m7110\Downloads\train.csv')
+
+# 2. معالجة القيم المفقودة (الـ 11 رمز بريدي)
+# بنعبي الفراغات بقيمة مؤقتة مثل 0 عشان ما نتعطل في الخرائط، أو تقدر تستخدم ()dropna. لو حبيت تحذفها
+df['Postal Code'] = df['Postal Code'].fillna(0)
+
+# 3. تحويل أعمدة التواريخ من نصوص إلى صيغة (Datetime) صحيحة
+df['Order Date'] = pd.to_datetime(df['Order Date'], format='%d/%m/%Y')
+df['Ship Date'] = pd.to_datetime(df['Ship Date'], format='%d/%m/%Y')
+
+# 4. التأكد من النتيجة (اختياري)
+print(df.info())
+print("عدد القيم المفقودة الآن:\n", df.isnull().sum())
+
+# 5. حفظ البيانات النظيفة في ملف جديد جاهز لـ Power BI
+df.to_csv('cleaned_superstore_data.csv', index=False)
+print("تم التنظيف وحفظ الملف النظيف بنجاح! 🚀")
